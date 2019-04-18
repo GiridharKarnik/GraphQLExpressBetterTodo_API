@@ -1,0 +1,58 @@
+const GetTaskById = new GraphQLObjectType({
+    name: "GetTaskForId",
+    fields: () => {
+        return {
+            task: {
+                type: new GraphQLObjectType(taskType),
+                args: {
+                    id: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                async resolve: (_, args) => {
+                    try {
+                        const task = await TaskModel.findById(args.id);
+                        return task;
+                    } catch (err) {
+                        throw new Error(err);
+                    }
+                }
+            }
+        }
+    }
+});
+
+
+
+
+
+
+import {
+    GraphQLString,
+    GraphQLNonNull
+} from 'graphql';
+const taskType = require('../task.type');
+
+const newTask = require('../../../mongodb/models/task.model').newTask;
+
+const createNewTask = {
+    type: taskType,
+    args: {
+        taskName: {
+            type: new GraphQLNonNull(GraphQLString)
+        },
+        authorId: {
+            type: new GraphQLNonNull(GraphQLString)
+        }
+    },
+    resolve(_, params) {
+        try {
+            const task = newTask(params.taskName, params.authorId);
+            return await task.save();
+        } catch (err) {
+            throw new Error(err);
+        }
+    }
+};
+
+module.exports = createNewTask;
