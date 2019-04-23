@@ -20,12 +20,17 @@ const graphQLRouteFunction = (app) => {
 
     graphQLRoute.use(
         "/",
-        cors(),
-        graphQLHTTP({
-            schema: rootSchema,
-            rootValue: global,
-            graphiql: process.env.NODE_ENV !== "production"
-        })
+        cors(), (req, res) => {
+            console.log(req);
+            graphQLHTTP({
+                schema: rootSchema,
+                rootValue: global,
+                graphiql: process.env.NODE_ENV !== "production",
+                formatError: (err) => {
+                    return err.message
+                }
+            })(req, res)
+        }
     );
 
     return graphQLRoute;

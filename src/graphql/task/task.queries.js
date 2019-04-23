@@ -1,6 +1,6 @@
 const gql = require('graphql');
 
-const taskType = require('./task.type');
+const taskType = require('./task.type').taskType;
 const TaskModel = require('../../mongodb/models/task.model').TaskModel;
 
 const taskQueries = new gql.GraphQLObjectType({

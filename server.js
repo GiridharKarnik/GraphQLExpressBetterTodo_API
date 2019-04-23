@@ -4,7 +4,7 @@ const morgan = require('morgan');
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('./src/config/envConfig')[env];
